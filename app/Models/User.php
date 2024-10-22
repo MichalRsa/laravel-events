@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,4 +57,16 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    // A user can create many events
+    public function events()
+    {
+        return $this->hasMany(Event::class);
+    }
+
+    // A user can sign up for many events
+    public function signedUpEvents()
+    {
+        return $this->belongsToMany(Event::class);
+    }
 }
