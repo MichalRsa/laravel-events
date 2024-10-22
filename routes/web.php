@@ -20,6 +20,15 @@ Route::get('/', function () {
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
+// Route to show a single event
+Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
+
+// Route to store the event
+Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
+// Route to show the create form
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),

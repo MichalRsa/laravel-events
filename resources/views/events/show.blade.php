@@ -1,0 +1,37 @@
+<!-- resources/views/events/show.blade.php -->
+
+<x-app-layout>
+<div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-4xl font-bold mb-4">{{ $event->title }}</h1>
+
+        <!-- Event Details -->
+        <div class="text-gray-700">
+            <p class="text-lg mb-4">
+                <strong>Description:</strong> {{ $event->description ?? 'No description provided.' }}
+            </p>
+
+            <p class="text-lg mb-4">
+                <strong>Start Time:</strong> {{ \Carbon\Carbon::parse($event->start_time)->format('M d, Y H:i') }}
+            </p>
+
+            @if ($event->end_time)
+                <p class="text-lg mb-4">
+                    <strong>End Time:</strong> {{ \Carbon\Carbon::parse($event->end_time)->format('M d, Y H:i') }}
+                </p>
+            @endif
+
+            @if ($event->location)
+                <p class="text-lg mb-4">
+                    <strong>Location:</strong> {{ $event->location }}
+                </p>
+            @endif
+        </div>
+
+        <!-- Back to Event List -->
+        <a href="{{ route('events.index') }}" class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">
+            Back to Events List
+        </a>
+    </div>
+</div>
+</x-app-layout>

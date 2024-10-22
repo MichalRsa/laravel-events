@@ -7,6 +7,11 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
+    public function create()
+    {
+        return view('events.create');
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -24,9 +29,10 @@ class EventController extends Controller
             'start_time' => $request->input('start_time'),
             'end_time' => $request->input('end_time'),
             'location' => $request->input('location'),
+            'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('events.show', $event);
+        return redirect()->route('events.index');
     }
 
     public function signUpForEvent($eventId)
@@ -47,12 +53,15 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-public function show(string $id): View
+    public function show($id)
     {
-        return view('user.profile', [
-            'user' => User::findOrFail($id)
-        ]);
+        // Retrieve the event by ID
+        $event = Event::findOrFail($id);
+
+        // Pass the event to the view
+        return view('events.show', compact('event'));
     }
+
     // Show events the user is attending
     public function myEvents()
     {

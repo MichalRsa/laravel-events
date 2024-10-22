@@ -31,7 +31,7 @@
                             @endif
                         </p>
 
-                        <a href=" route('events.show', $event->id) "
+                        <a href="{{ route('events.show', $event->id) }}"
                             class="inline-block bg-blue-500 text-white py-2 px-4 rounded">
                             View Details
                         </a>
