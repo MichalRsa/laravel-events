@@ -18,6 +18,7 @@ return new class () extends Migration {
             $table->dateTime('start_time');
             $table->dateTime('end_time')->nullable();
             $table->string('location')->nullable();
+            $table->foreignId('team_id')->constrained('teams')->onDelete('cascade'); // Link to teams table
             $table->timestamps();
         });
     }

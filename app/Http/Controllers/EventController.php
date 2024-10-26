@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class EventController extends Controller
 {
@@ -30,6 +31,7 @@ class EventController extends Controller
             'end_time' => $request->input('end_time'),
             'location' => $request->input('location'),
             'user_id' => auth()->id(),
+            'team_id' => $request->user()->currentTeam->id, // Assign the current team ID
         ]);
 
         return redirect()->route('events.index');
@@ -53,10 +55,10 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-    public function show($id)
+    public function show(Event $id)
     {
         // Retrieve the event by ID
-        $event = Event::findOrFail($id);
+        $event = Event::findOrFail($id->id);
 
         // Pass the event to the view
         return view('events.show', compact('event'));

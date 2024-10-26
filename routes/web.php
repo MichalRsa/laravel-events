@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,14 +21,13 @@ Route::get('/', function () {
 
 Route::get('/events', [EventController::class, 'index'])->name('events.index');
 
+// Route to show the create form
+Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+
 // Route to show a single event
-Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
 
 // Route to store the event
 Route::post('/events', [EventController::class, 'store'])->name('events.store');
-
-// Route to show the create form
-Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
 
 Route::middleware([
     'auth:sanctum',
@@ -37,4 +37,7 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+
+    Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', 'id');
+    /*Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', Event::class);*/
 });
