@@ -19,16 +19,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/events', [EventController::class, 'index'])->name('events.index');
-
-// Route to show the create form
-Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
-
-// Route to show a single event
-
-// Route to store the event
-Route::post('/events', [EventController::class, 'store'])->name('events.store');
-
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -38,6 +28,19 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    Route::get('/events', [EventController::class, 'index'])->name('events.index');
+
+    // Route to show the create form
+    Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
+
+    // Route to show a single event
+
+    // Route to store the event
+    Route::post('/events', [EventController::class, 'store'])->name('events.store');
+
+    Route::post('/events/{event}/register', [EventController::class, 'register'])->name('events.register');
+    Route::post('/events/{event}/cancel', [EventController::class, 'cancelRegistration'])->name('events.cancel');
+
     Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', 'id');
-    /*Route::get('/events/{event}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', Event::class);*/
+
 });

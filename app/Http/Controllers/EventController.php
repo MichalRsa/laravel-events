@@ -3,17 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 
 class EventController extends Controller
 {
-    public function create()
+    public function create(): View|Factory
     {
         return view('events.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'title' => 'required|string|max:255',
@@ -37,7 +40,7 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 
-    public function signUpForEvent($eventId)
+    public function signUpForEvent($eventId): RedirectResponse
     {
         $event = Event::findOrFail($eventId);
 
@@ -47,15 +50,17 @@ class EventController extends Controller
         return redirect()->route('events.show', $event);
     }
 
-    public function index()
+    public function index(): View|Factory
     {
         // List all events
-        $events = Event::all();
+        $userCurrentTeam = auth()->user()->current_team_id;
+
+        $events = Event::where('team_id', $userCurrentTeam)->get();
 
         return view('events.index', compact('events'));
     }
 
-    public function show(Event $id)
+    public function show(Event $id): View|Factory
     {
         // Retrieve the event by ID
         $event = Event::findOrFail($id->id);
@@ -65,10 +70,37 @@ class EventController extends Controller
     }
 
     // Show events the user is attending
-    public function myEvents()
+    public function myEvents(): View|Factory
     {
         $events = auth()->user()->signedUpEvents;
 
         return view('events.myevents', compact('events'));
+    }
+
+    // Method to sign up the user for an event
+    public function register(Event $event): RedirectResponse
+    {
+        $user = Auth::user();
+        /*dd($user->signedUpEvents());*/
+
+        // Check if the user is already registered
+        if (! $user->signedUpEvents->contains($event->id)) {
+            $user->signedUpEvents()->attach($event->id);  // Add to pivot table
+        }
+
+        return redirect()->route('events.show', $event)->with('success', 'You have registered for the event.');
+    }
+
+    // Method to cancel the registration
+    public function cancelRegistration(Event $event): RedirectResponse
+    {
+        $user = Auth::user();
+
+        // Check if the user is already registered
+        if ($user->signedUpEvents->contains($event->id)) {
+            $user->signedUpEvents()->detach($event->id);  // Remove from pivot table
+        }
+
+        return redirect()->route('events.show', $event)->with('success', 'You have canceled your registration.');
     }
 }
