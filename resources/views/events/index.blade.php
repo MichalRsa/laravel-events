@@ -49,18 +49,21 @@
                             class="inline-block bg-blue-500 text-white py-2 px-4 rounded">
                             View Details
                         </a>
-                        @if (Auth::user()->signedUpEvents->contains($event->id))
-                            <form action="{{ route('events.cancel', $event) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Cancel
-                                    Registration</button>
-                            </form>
-                        @else
-                            <form action="{{ route('events.register', $event) }}" method="POST">
-                                @csrf
-                                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Register for
-                                    Event</button>
-                            </form>
+                        @if (!Auth::user()->id === $event->user_id)
+                            @if (Auth::user()->signedUpEvents->contains($event->id))
+                                <form action="{{ route('events.cancel', $event) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Cancel
+                                        Registration</button>
+                                </form>
+                            @else
+                                <form action="{{ route('events.register', $event) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Register
+                                        for
+                                        Event</button>
+                                </form>
+                            @endif
                         @endif
                     </div>
                 @endforeach
