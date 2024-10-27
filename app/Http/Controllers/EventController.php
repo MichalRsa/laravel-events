@@ -55,7 +55,7 @@ class EventController extends Controller
         // List all events
         $userCurrentTeam = auth()->user()->current_team_id;
 
-        $events = Event::where('team_id', $userCurrentTeam)->get();
+        $events = Event::where('team_id', $userCurrentTeam)->orderBy('start_time', 'asc')->get();
 
         return view('events.index', compact('events'));
     }

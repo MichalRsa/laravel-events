@@ -20,14 +20,14 @@ class EventFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'title' => $this->faker->title(),
+            'title' => $this->faker->text(50),
             'description' => $this->faker->text(500),
             /*2025-12-12T12:12*/
             'start_time' => $this->faker->dateTimeThisYear(),
             /*2025-12-12T21:00*/
             'end_time' => $this->faker->dateTimeThisYear(),
             'location' => $this->faker->city(),
-            'team_id' => 11,
+            'team_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d\TH:i'),
         ];
     }
