@@ -17,7 +17,12 @@
                 @foreach ($events as $event)
                     <div class="bg-white shadow-md rounded-lg p-4">
                         <h2 class="text-xl font-semibold mb-2">{{ $event->title }}</h2>
-                        <p>Organizer: {{ Auth::user()->name }}</p>
+                        <div class="flex items-center">
+
+                            <img class="h-8 w-8 rounded-full object-cover mr-4"
+                                src="{{ $event->user->profile_photo_url }}" alt="{{ $event->user->name }}" />
+                            <p>{{ $event->user->name }}</p>
+                        </div>
 
                         <p class="text-gray-700 mb-4">
                             {{ Str::limit($event->description, 100) }}
@@ -39,9 +44,19 @@
                             @if (!$event->attendees)
                                 No one signed up, yet.
                             @else
-                                @foreach ($event->attendees as $attendee)
-                                    <li>{{ $attendee->name }}</li>
-                                @endforeach
+                                <div class="flex items-center">
+
+                                    <ul class="flex my-4">
+                                        @foreach ($event->attendees->take(4) as $attendee)
+                                            <li class="mr-2"><img class="h-8 w-8 rounded-full object-cover"
+                                                    src="{{ $attendee->profile_photo_url }}" alt=""></li>
+                                        @endforeach
+                                    </ul>
+                                    @if ($event->attendees->count() - 4 > 0)
+                                        <p>{{ $event->attendees->count() - 4 > 0 }} more</p>
+                                    @endif
+
+                                </div>
                             @endif
                         </p>
 
@@ -49,7 +64,7 @@
                             class="inline-block bg-blue-500 text-white py-2 px-4 rounded">
                             View Details
                         </a>
-                        @if (!Auth::user()->id === $event->user_id)
+                        @if (!(Auth::user()->id === $event->user_id))
                             @if (Auth::user()->signedUpEvents->contains($event->id))
                                 <form action="{{ route('events.cancel', $event) }}" method="POST">
                                     @csrf
