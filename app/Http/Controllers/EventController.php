@@ -61,11 +61,9 @@ class EventController extends Controller
         return view('events.index', compact('events'));
     }
 
-    public function calendar(): View|Factory
+    public function calendar(Request $request): View|Factory
     {
         $today = Carbon::today();
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
 
         // Get all days in the current month
         $daysInMonth = Carbon::now()->daysInMonth;
