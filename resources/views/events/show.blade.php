@@ -3,8 +3,12 @@
 <x-app-layout>
 <div class="container mx-auto p-6">
     <div class="bg-white shadow-md rounded-lg p-6">
-        <h1 class="text-4xl font-bold mb-4">{{ $event->title }}</h1>
+    <div class="mb-4 flex justify-between w-full items-center">
 
+        <h1 class="text-4xl font-bold ">{{ $event->title }}</h1>
+        <a href="{{route('events.edit', $event->id)}}" class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
+
+    </div>
         <!-- Event Details -->
         <div class="text-gray-700">
             <p class="text-lg mb-4">

@@ -42,6 +42,10 @@ Route::middleware([
     Route::post('/events/{event}/register', [EventController::class, 'register'])->name('events.register');
     Route::post('/events/{event}/cancel', [EventController::class, 'cancelRegistration'])->name('events.cancel');
 
+    Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
+
+    Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update');
+
     Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', 'id');
 
 });

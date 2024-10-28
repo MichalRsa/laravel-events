@@ -41,6 +41,33 @@ class EventController extends Controller
         return redirect()->route('events.index');
     }
 
+    public function edit(Event $event): Redirector|RedirectResponse|View
+    {
+        return view('events.edit', ['event' => $event]);
+    }
+
+    public function update(Event $event): Redirector|RedirectResponse
+    {
+        request()->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'start_time' => 'required|date',
+            'end_time' => 'nullable|date|after:start_time',
+            'location' => 'nullable|string',
+        ]);
+
+        // Create the event for the authenticated user
+        $event->update([
+            'title' => request('title'),
+            'description' => request('description'),
+            'start_time' => request('start_time'),
+            'end_time' => request('end_time'),
+            'location' => request('location'),
+        ]);
+
+        return redirect()->route('events.show', $event);
+    }
+
     public function signUpForEvent($eventId): RedirectResponse
     {
         $event = Event::findOrFail($eventId);
@@ -64,6 +91,9 @@ class EventController extends Controller
     public function calendar(Request $request): View|Factory
     {
         $today = Carbon::today();
+
+        $currentMonth = $request->get('month', Carbon::now()->month);
+        $currentYear = $request->get('year', Carbon::now()->year);
 
         // Get all days in the current month
         $daysInMonth = Carbon::now()->daysInMonth;
