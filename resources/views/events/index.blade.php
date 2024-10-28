@@ -3,7 +3,12 @@
 <x-app-layout>
     <div class="container mx-auto p-6">
         <div class="flex justify-between mb-6">
-            <h1 class="text-3xl font-bold ">All Events</h1>
+            <div class="flex items-center  gap-4">
+                <h1 class="text-3xl font-bold ">All Events</h1>
+                <a href="{{ route('events.calendar') }}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded">
+                    Calendar View
+                </a>
+            </div>
 
             <a href="{{ route('events.create') }}" class="inline-block bg-blue-500 text-white py-2 px-4 rounded h-fit">
                 Create New

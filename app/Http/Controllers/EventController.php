@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -58,6 +59,32 @@ class EventController extends Controller
         $events = Event::where('team_id', $userCurrentTeam)->orderBy('start_time', 'asc')->get();
 
         return view('events.index', compact('events'));
+    }
+
+    public function calendar(): View|Factory
+    {
+        $today = Carbon::today();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
+        // Get all days in the current month
+        $daysInMonth = Carbon::now()->daysInMonth;
+        $firstDayOfMonth = Carbon::create($currentYear, $currentMonth, 1);
+        $startingDay = $firstDayOfMonth->dayOfWeek;
+
+        // Get events for the current month (assuming you have Event model)
+        $userCurrentTeam = auth()->user()->current_team_id;
+
+        $events = Event::whereMonth('start_time', $currentMonth)
+            ->whereYear('start_time', $currentYear)
+            ->where('team_id', $userCurrentTeam)
+            ->orderBy('start_time', 'asc')
+            ->get()
+            ->groupBy(function ($event) {
+                return Carbon::parse($event->start_time)->day;
+            });
+
+        return view('events.calendar', compact('today', 'daysInMonth', 'startingDay', 'events', 'currentMonth', 'currentYear'));
     }
 
     public function show(Event $id): View|Factory

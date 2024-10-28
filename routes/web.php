@@ -29,6 +29,7 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
+    Route::get('/events/calendar', [EventController::class, 'calendar'])->name('events.calendar');
 
     // Route to show the create form
     Route::get('/events/create', [EventController::class, 'create'])->name('events.create');
