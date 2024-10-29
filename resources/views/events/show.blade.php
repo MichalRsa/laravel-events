@@ -40,6 +40,8 @@
             </a>
             <x-add-to-google-calendar-button :title="$event->title" :description="$event->description" :start_time="$event->start_time" :end_time='$event->end_time'
                 :location='$event->location' />
+
+            <x-open-in-googlemaps-button :location='$event->location' />
         </div>
     </div>
 </x-app-layout>
