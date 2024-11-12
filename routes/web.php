@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\UserController;
 use App\Models\Event;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
+
+    Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show');
 
     Route::get('/events', [EventController::class, 'index'])->name('events.index');
     Route::get('/events/calendar', [EventController::class, 'calendar'])->name('events.calendar');
