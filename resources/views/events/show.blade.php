@@ -32,12 +32,6 @@
                     </p>
                 @endif
             </div>
-
-            <!-- Back to Event List -->
-            <a href="{{ route('events.index') }}"
-                class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">
-                Back to Events List
-            </a>
             <x-add-to-google-calendar-button :title="$event->title" :description="$event->description" :start_time="$event->start_time" :end_time='$event->end_time'
                 :location='$event->location' />
 
