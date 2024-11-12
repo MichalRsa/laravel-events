@@ -44,9 +44,9 @@ class EventPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Event $event): bool
+    public function delete(?User $user, Event $event): bool
     {
-        //
+        return $event->user_id === Auth::user()->id;
     }
 
     /**

@@ -6,10 +6,21 @@
             <div class="mb-4 flex justify-between w-full items-center">
 
                 <h1 class="text-4xl font-bold ">{{ $event->title }}</h1>
-                @can('update', $event)
-                    <a href="{{ route('events.edit', $event->id) }}"
-                        class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
-                @endcan
+                <div>
+                    @can('update', $event)
+                        <a href="{{ route('events.edit', $event->id) }}"
+                            class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
+                    @endcan
+
+                    @can('delete', $event)
+                        <form method="POST" action="/events/{{ $event->id }}" class="inline-block">
+                            @csrf
+                            @method('DELETE')
+                            <button class="inline-block bg-red-500 text-white font-bold py-2 px-4 rounded"
+                                type="submit">Remove</button>
+                        </form>
+                    @endcan
+                </div>
             </div>
             <!-- Event Details -->
             <div class="text-gray-700">
@@ -62,9 +73,4 @@
 
                 <x-open-in-googlemaps-button :location='$event->location' />
             </div>
-            <x-add-to-google-calendar-button :title="$event->title" :description="$event->description" :start_time="$event->start_time" :end_time='$event->end_time'
-                :location='$event->location' />
-
-            <x-open-in-googlemaps-button :location='$event->location' />
-        </div>
 </x-app-layout>

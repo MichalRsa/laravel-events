@@ -158,4 +158,11 @@ class EventController extends Controller
 
         return redirect()->route('events.show', $event)->with('success', 'You have canceled your registration.');
     }
+    public function destroy(Event $event): Redirector|RedirectResponse
+    {
+        $event->delete();
+
+        return redirect('/events/');
+    }
+
 }
