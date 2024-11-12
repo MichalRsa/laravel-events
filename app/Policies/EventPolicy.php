@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Event;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class EventPolicy
 {
@@ -35,9 +36,9 @@ class EventPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Event $event): bool
+    public function update(?User $user, Event $event): bool
     {
-        //
+        return $event->user_id === Auth::user()->id;
     }
 
     /**

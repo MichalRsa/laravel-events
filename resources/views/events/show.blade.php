@@ -6,9 +6,10 @@
             <div class="mb-4 flex justify-between w-full items-center">
 
                 <h1 class="text-4xl font-bold ">{{ $event->title }}</h1>
-                <a href="{{ route('events.edit', $event->id) }}"
-                    class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
-
+                @can('update', $event)
+                    <a href="{{ route('events.edit', $event->id) }}"
+                        class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
+                @endcan
             </div>
             <!-- Event Details -->
             <div class="text-gray-700">
@@ -43,7 +44,7 @@
                             <ul class="flex flex-wrap gap-2">
                                 @foreach ($event->attendees as $attendee)
                                     <li>
-                                        <a href="{{route('users.show', $attendee->id)}}"
+                                        <a href="{{ route('users.show', $attendee->id) }}"
                                             class="flex items-center py-1 px-2 border border-blue-500 rounded-lg hover:bg-blue-500 hover:cursor-pointer"><img
                                                 class="h-8 w-8 rounded-full object-cover"
                                                 src="{{ $attendee->profile_photo_url }}" alt="">
