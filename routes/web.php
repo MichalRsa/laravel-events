@@ -45,7 +45,6 @@ Route::middleware([
     Route::get('/events/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
 
     Route::patch('/events/{event}', [EventController::class, 'update'])->name('events.update')->middleware('auth')->can('update', 'event');
-    Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.delete')->middleware('auth')->can('update', 'event');
 
     Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show')->middleware('auth')->can('view', 'id');
 

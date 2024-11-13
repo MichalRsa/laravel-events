@@ -9,16 +9,11 @@
                 <div>
                     @can('update', $event)
                         <a href="{{ route('events.edit', $event->id) }}"
-                            class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded">Edit</a>
+                            class="inline-block bg-blue-500 text-white font-bold py-2 px-4 rounded text-sm">Edit</a>
                     @endcan
 
                     @can('delete', $event)
-                        <form method="POST" action="/events/{{ $event->id }}" class="inline-block">
-                            @csrf
-                            @method('DELETE')
-                            <button class="inline-block bg-red-500 text-white font-bold py-2 px-4 rounded"
-                                type="submit">Remove</button>
-                        </form>
+                        <livewire:delete-event-form :event="$event" />
                     @endcan
                 </div>
             </div>
